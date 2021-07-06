@@ -59,6 +59,15 @@ public class Main {
                     empregado.add_venda();
                     System.out.println("Venda adicionada com sucesso!\n");
                 }
+                else if(chave == 5)
+                {
+                    empregado.add_taxa_de_servico();
+                    System.out.println("Taxa de serviço adicionada com sucesso!\n");
+                }
+                else if(chave == 6)
+                {
+                    empregado.alterar_info();
+                }
                 else if(chave == 8)
                 {
                     empregado.listar_funcionarios();

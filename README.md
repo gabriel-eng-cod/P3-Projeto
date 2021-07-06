@@ -1,3 +1,3 @@
-# Projeto para a disciplina "Projeto de Software"
+# Projeto para a disciplina "Projeto de Software" utilizando a linguagem Java
 
 # Folha de Pagamento

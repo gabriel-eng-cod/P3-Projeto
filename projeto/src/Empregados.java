@@ -611,9 +611,9 @@ public class Empregados {
 
                             double salario_assalariado = input.nextDouble();
 
-                            Assalariado assal = new Assalariado(horista.get_name(), horista.get_endereco(), salario_assalariado, 1, valor, horista.get_id(), horista.get_is_sind(), horista.get_escolha_pag());
+                            add_assalariado_aux(horista.get_name(), horista.get_endereco(), salario_assalariado, 1, valor, horista.get_id(), horista.get_is_sind(), horista.get_escolha_pag());
                             
-                            assalariado_list.add(assal);
+                            quant_assalariado++;
                         }
                         else
                         {
@@ -621,9 +621,22 @@ public class Empregados {
 
                             double salario_assalariado = input.nextDouble();
 
-                            Assalariado assal = new Assalariado(horista.get_name(), horista.get_endereco(), salario_assalariado, 2, -1, horista.get_id(), horista.get_is_sind(), horista.get_escolha_pag());
-                        
-                            assalariado_list.add(assal);
+                            add_assalariado_aux(horista.get_name(), horista.get_endereco(), salario_assalariado, 2, 0, horista.get_id(), horista.get_is_sind(), horista.get_escolha_pag());
+                
+                            quant_assalariado++;
+                        }
+
+                        for(int k = 0; k < quant_horista; k++)
+                        {
+                            Assalariado assalariado = assalariado_list.get(k);
+
+                            if(assalariado.id == id)
+                            {
+                                for(Taxa_de_servico taxa : horista.taxa_list)
+                                {
+                                    assalariado.taxa_list.add(taxa);
+                                }
+                            }
                         }
 
                         for (int j = 0; j < quant_horista; j++)
@@ -705,11 +718,8 @@ public class Empregados {
                     if(escolha == 1)
                     {
                         System.out.printf("O nome do funcionário é %s.\n", assalariado.name);
-                        System.out.printf("Digite um novo nome: ");
-
-                        String new_name = input.nextLine();
-
-                        assalariado.name = new_name;
+                        
+                        assalariado.alterar_nome(assalariado);
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
@@ -718,9 +728,7 @@ public class Empregados {
                         System.out.printf("O endereço do funcionário é %s.\n", assalariado.endereco);
                         System.out.printf("Digite um novo endereço: ");
 
-                        String new_endereco = input.nextLine();
-
-                        assalariado.endereco = new_endereco;
+                        assalariado.alterar_endereco(assalariado);
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
@@ -732,10 +740,21 @@ public class Empregados {
 
                         double salario_horista = input.nextDouble();
 
-                        Horista horis = new Horista(assalariado.name, assalariado.endereco, salario_horista, id, assalariado.is_sindicate, assalariado.escolha_pag);
-                            
-                        horista_list.add(horis);
-                    
+                        add_horista_aux(assalariado.name, assalariado.endereco, salario_horista, id, assalariado.is_sindicate, assalariado.escolha_pag);
+                        quant_horista++;
+                        
+                        for(int k = 0; k < quant_horista; k++)
+                        {
+                            Horista horista = horista_list.get(k);
+
+                            if(horista.get_id() == id)
+                            {
+                                for(Taxa_de_servico taxa : assalariado.taxa_list)
+                                {
+                                    horista.taxa_list.add(taxa);
+                                }
+                            }
+                        }
 
                         for (Assalariado funcionario : assalariado_list)
                         {
@@ -769,9 +788,7 @@ public class Empregados {
                             System.out.printf("Qual o novo método de pagamento?\n1) Cheque pelos correios\n3) Cheque em mãos\n");
                         }
 
-                        int new_meth = input.nextInt();
-
-                        assalariado.escolha_pag = new_meth;
+                        assalariado.alterar_meth_pag(assalariado);
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
@@ -780,18 +797,12 @@ public class Empregados {
                         if(assalariado.is_sindicate)
                         {
                             System.out.printf("O funcionário pertencia ao sindicato e agora não pertence mais.\n");
-                            assalariado.is_sindicate = false;
+                            assalariado.alterar_is_sind(assalariado);
                         }
                         else
                         {
                             System.out.printf("O funcionário não pertencia ao sindicato e agora pertence.\n");
-                            assalariado.is_sindicate = true;
-
-                            System.out.printf("Qual a taxa mensal do sindicato?\n\n-> ");
-                            
-                            double taxa_mensal_sindicato = input.nextDouble();
-
-                            assalariado.sindicate(id_sindicato, taxa_mensal_sindicato);
+                            assalariado.alterar_is_sind(assalariado);
                             id_sindicato++;
                         }
 
@@ -800,22 +811,38 @@ public class Empregados {
                     else if(escolha == 6)
                     {
                         System.out.printf("O ID do funcionário no sindicato é %d.\n", assalariado.id_sindicato);
-                        System.out.printf("Digite o novo ID: ");
-                        int new_id = input.nextInt();
-                        assalariado.id_sindicato = new_id;
+                        assalariado.alterar_id_sind(assalariado);
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else
                     {
                         System.out.printf("A taxa mensal do funcionário no sindicato é %.2f.\n", assalariado.taxa_mensal_sindicato);
-                        System.out.printf("Digite a nova taxa sindical: ");
-                        double new_taxa = input.nextDouble();
-                        assalariado.taxa_mensal_sindicato = new_taxa;
+                        assalariado.alterar_taxa(assalariado);
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                 }
             }
         }
-        
+    }
+
+    void add_horista_aux(String name, String endereco, double salario, int id, boolean is_sindicate, int escolha_pag)
+    {
+        Horista horis = new Horista(name, endereco, salario, id, is_sindicate, escolha_pag);
+
+        id++;
+        id_sindicato++;
+
+        horista_list.add(horis);
+    }
+
+    void add_assalariado_aux(String name, String endereco, double salario_assalariado, int comissionado, double comissao, int id, boolean is_sindicate, int escolha_pag)
+    {
+        Assalariado assal = new Assalariado(name, endereco, salario_assalariado, comissionado, comissao, id, is_sindicate, escolha_pag);
+
+        id++;
+
+        id_sindicato++;
+
+        assalariado_list.add(assal);
     }
 }

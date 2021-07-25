@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
-import javax.lang.model.util.ElementScanner6;
-import javax.xml.validation.Validator;
+//import javax.lang.model.util.ElementScanner6;
+//import javax.xml.validation.Validator;
 
 import java.util.LinkedList;
-import java.util.List;
+//import java.util.List;
 
 public class Empregados {
     
@@ -60,7 +60,7 @@ public class Empregados {
         String name;
         String endereco;
         double salario_hora, taxa_mensal_sindicato = 0;
-        int sindicate, tipo_de_pag;
+        int sindicate;
         boolean is_sindicate = false;
 
         System.out.println("O funcionário faz parte do sindicato?\n\n1) Sim\n2) Não\n");
@@ -221,16 +221,16 @@ public class Empregados {
             {
                 Horista funcionario = horista_list.get(i);
 
-                System.out.printf("Nome: %s\n", funcionario.get_name());
-                System.out.printf("Endereço: %s\n", funcionario.get_endereco());
-                System.out.printf("Salário: %.2f\n", funcionario.get_salario_hora());
-                System.out.printf("ID do funcionário: %s\n", funcionario.get_id());
+                System.out.printf("Nome: %s\n", funcionario.name);
+                System.out.printf("Endereço: %s\n", funcionario.endereco);
+                System.out.printf("Salário: %.2f\n", funcionario.salario_hora);
+                System.out.printf("ID do funcionário: %s\n", funcionario.id);
                 System.out.printf("Tipo de pagamento: ");
-                if(funcionario.get_escolha_pag() == 1)
+                if(funcionario.escolha_pag == 1)
                 {
                     System.out.printf("Cheque pelos correios\n");
                 }
-                else if(funcionario.get_escolha_pag() == 2)
+                else if(funcionario.escolha_pag == 2)
                 {
                     System.out.printf("Cheque em mãos\n");
                 }
@@ -240,11 +240,11 @@ public class Empregados {
                 }
                 System.out.println();
 
-                if(funcionario.get_is_sind())
+                if(funcionario.is_sindicate)
                 {
                     System.out.printf("O funcionário faz parte do sindicato\n");
-                    System.out.printf("Taxa mensal do sindicato: %.2f\n", funcionario.get_tx_mensal_sind());
-                    System.out.printf("ID do funcionário no sindicato: %d\n\n", funcionario.get_id_sind());
+                    System.out.printf("Taxa mensal do sindicato: %.2f\n", funcionario.taxa_mensal_sindicato);
+                    System.out.printf("ID do funcionário no sindicato: %d\n\n", funcionario.id_sindicato);
                     System.out.println();
                     System.out.printf("Taxas de serviço do funcionário:\n\n");
 
@@ -260,7 +260,7 @@ public class Empregados {
                     System.out.printf("O funcionário não faz parte do sindicato\n\n");
                 }
 
-                System.out.printf("Cartões de pontos do funcionário %s:\n", funcionario.get_name());
+                System.out.printf("Cartões de pontos do funcionário %s:\n", funcionario.name);
                 
                 for(Cartao_de_ponto card : funcionario.cartao_list)
                 {
@@ -375,7 +375,7 @@ public class Empregados {
         {
             for (Horista funcionario : horista_list)
             {
-                if(funcionario.get_id() == chave)
+                if(funcionario.id == chave)
                 {
                     horista_list.remove(funcionario);
                     quant_horista--;
@@ -422,7 +422,7 @@ public class Empregados {
 
         for (Horista horista : horista_list) 
         {
-            if(horista.get_id() == id)
+            if(horista.id == id)
             {
                 horista.cartao_list.add(card);
                 break;
@@ -491,7 +491,7 @@ public class Empregados {
 
         for (Horista horista : horista_list) 
         {
-            if(horista.get_id() == id)
+            if(horista.id == id)
             {
                 horista.taxa_list.add(taxa_de_servico);
                 return;
@@ -519,9 +519,9 @@ public class Empregados {
 
         for (Horista horista : horista_list) 
         {
-            if(horista.get_id() == id)
+            if(horista.id == id)
             {
-                System.out.printf("O ID informado pertence ao funcionário %s.\n\n", horista.get_name());
+                System.out.printf("O ID informado pertence ao funcionário %s.\n\n", horista.name);
                 System.out.printf("Qual dado você deseja alterar?\n\n");
                 System.out.printf("1) Nome\n");
                 System.out.printf("2) Endereço\n");
@@ -575,11 +575,11 @@ public class Empregados {
             {
                 Horista horista = horista_list.get(i);
 
-                if(horista.get_id() == id)
+                if(horista.id == id)
                 {
                     if(escolha == 1)
                     {
-                        System.out.printf("O nome do funcionário é %s.\n", horista.get_name());
+                        System.out.printf("O nome do funcionário é %s.\n", horista.name);
 
                         horista.alterar_nome(horista_list.get(i));
 
@@ -587,8 +587,7 @@ public class Empregados {
                     }
                     else if(escolha == 2)
                     {
-                        System.out.printf("O endereço do funcionário é %s.\n", horista.get_endereco());
-                        System.out.printf("Digite um novo endereço: ");
+                        System.out.printf("O endereço do funcionário é %s.\n", horista.endereco);
 
                         horista.alterar_endereco(horista_list.get(i));
 
@@ -611,7 +610,7 @@ public class Empregados {
 
                             double salario_assalariado = input.nextDouble();
 
-                            add_assalariado_aux(horista.get_name(), horista.get_endereco(), salario_assalariado, 1, valor, horista.get_id(), horista.get_is_sind(), horista.get_escolha_pag());
+                            add_assalariado_aux(horista.name, horista.endereco, salario_assalariado, 1, valor, horista.id, horista.is_sindicate, horista.escolha_pag, horista.id_sindicato, horista.taxa_mensal_sindicato);
                             
                             quant_assalariado++;
                         }
@@ -621,7 +620,7 @@ public class Empregados {
 
                             double salario_assalariado = input.nextDouble();
 
-                            add_assalariado_aux(horista.get_name(), horista.get_endereco(), salario_assalariado, 2, 0, horista.get_id(), horista.get_is_sind(), horista.get_escolha_pag());
+                            add_assalariado_aux(horista.name, horista.endereco, salario_assalariado, 2, 0, horista.id, horista.is_sindicate, horista.escolha_pag, horista.id_sindicato, horista.taxa_mensal_sindicato);
                 
                             quant_assalariado++;
                         }
@@ -643,7 +642,7 @@ public class Empregados {
                         {
                             Horista func = horista_list.get(i);
 
-                            if(func.get_id() == id)
+                            if(func.id == id)
                             {
                                 horista_list.remove(func);
                                 quant_horista--;
@@ -657,12 +656,12 @@ public class Empregados {
                     else if(escolha == 4)
                     {
                         System.out.printf("O método de pagamento do funcionário é ");
-                        if(horista.get_escolha_pag() == 1)
+                        if(horista.escolha_pag == 1)
                         {
                             System.out.printf("Cheque pelos correios\n\n");
                             System.out.printf("Qual o novo método de pagamento?\n2) Cheque em mãos\n3) Depósito em conta bancária\n");
                         }
-                        else if(horista.get_escolha_pag() == 2)
+                        else if(horista.escolha_pag == 2)
                         {
                             System.out.printf("Cheque em mãos\n\n");
                             System.out.printf("Qual o novo método de pagamento?\n1) Cheque pelos correios\n3) Depósito em conta bancária\n");
@@ -679,7 +678,7 @@ public class Empregados {
                     }
                     else if(escolha == 5)
                     {
-                        if(horista.get_is_sind())
+                        if(horista.is_sindicate)
                         {
                             System.out.printf("O funcionário pertencia ao sindicato e agora não pertence mais.\n");
                             horista.alterar_is_sind(horista_list.get(i));
@@ -695,13 +694,13 @@ public class Empregados {
                     }
                     else if(escolha == 6)
                     {
-                        System.out.printf("O ID do funcionário no sindicato é %d.\n", horista.get_id_sind());
+                        System.out.printf("O ID do funcionário no sindicato é %d.\n", horista.id_sindicato);
                         horista.alterar_id_sind(horista_list.get(i));
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else
                     {
-                        System.out.printf("A taxa mensal do funcionário no sindicato é %.2f.\n", horista.get_tx_mensal_sind());
+                        System.out.printf("A taxa mensal do funcionário no sindicato é %.2f.\n", horista.taxa_mensal_sindicato);
                         horista.alterar_taxa(horista_list.get(i));
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
@@ -726,7 +725,6 @@ public class Empregados {
                     else if(escolha == 2)
                     {
                         System.out.printf("O endereço do funcionário é %s.\n", assalariado.endereco);
-                        System.out.printf("Digite um novo endereço: ");
 
                         assalariado.alterar_endereco(assalariado);
 
@@ -740,19 +738,20 @@ public class Empregados {
 
                         double salario_horista = input.nextDouble();
 
-                        add_horista_aux(assalariado.name, assalariado.endereco, salario_horista, id, assalariado.is_sindicate, assalariado.escolha_pag);
+                        add_horista_aux(assalariado.name, assalariado.endereco, salario_horista, id, assalariado.is_sindicate, assalariado.escolha_pag, assalariado.id_sindicato, assalariado.taxa_mensal_sindicato);
                         quant_horista++;
                         
                         for(int k = 0; k < quant_horista; k++)
                         {
                             Horista horista = horista_list.get(k);
 
-                            if(horista.get_id() == id)
+                            if(horista.id == id)
                             {
                                 for(Taxa_de_servico taxa : assalariado.taxa_list)
                                 {
                                     horista.taxa_list.add(taxa);
                                 }
+                                break;
                             }
                         }
 
@@ -825,9 +824,14 @@ public class Empregados {
         }
     }
 
-    void add_horista_aux(String name, String endereco, double salario, int id, boolean is_sindicate, int escolha_pag)
+    void add_horista_aux(String name, String endereco, double salario, int id, boolean is_sindicate, int escolha_pag, int id_sindicato, double taxa_mensal_sindicato)
     {
         Horista horis = new Horista(name, endereco, salario, id, is_sindicate, escolha_pag);
+
+        if(is_sindicate)
+        {
+            horis.sindicate(id_sindicato, taxa_mensal_sindicato);
+        }
 
         id++;
         id_sindicato++;
@@ -835,9 +839,14 @@ public class Empregados {
         horista_list.add(horis);
     }
 
-    void add_assalariado_aux(String name, String endereco, double salario_assalariado, int comissionado, double comissao, int id, boolean is_sindicate, int escolha_pag)
+    void add_assalariado_aux(String name, String endereco, double salario_assalariado, int comissionado, double comissao, int id, boolean is_sindicate, int escolha_pag, int id_sindicato, double taxa_mensal_sindicato)
     {
         Assalariado assal = new Assalariado(name, endereco, salario_assalariado, comissionado, comissao, id, is_sindicate, escolha_pag);
+
+        if(is_sindicate)
+        {
+            assal.sindicate(id_sindicato, taxa_mensal_sindicato);
+        }
 
         id++;
 

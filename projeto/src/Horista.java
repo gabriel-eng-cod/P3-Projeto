@@ -7,7 +7,9 @@ public class Horista extends Empregado{
 
     public LinkedList<Cartao_de_ponto> cartao_list = new LinkedList<>();
 
-    public Horista(String name, String endereco, double salario_hora, int id, boolean is_sindicate, int escolha_pag)
+    double salario_hora;
+
+    public Horista(String name, String endereco, double salario_hora, int id, boolean is_sindicate, int escolha_pag, String metodo_pag)
     {
         this.name = name;
         this.endereco = endereco;
@@ -15,5 +17,6 @@ public class Horista extends Empregado{
         this.id = id;
         this.is_sindicate = is_sindicate;
         this.escolha_pag = escolha_pag;
+        this.metodo_pag = metodo_pag;
     }
 }

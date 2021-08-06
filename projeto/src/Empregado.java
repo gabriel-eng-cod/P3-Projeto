@@ -7,10 +7,10 @@ public class Empregado
 
     public LinkedList<Taxa_de_servico> taxa_list = new LinkedList<>();
 
-    public String name;
+    public String name, metodo_pag;
     public String endereco;
-    public double salario_hora, taxa_mensal_sindicato, comissao, salario_assalariado;
-    public int id, id_sindicato, escolha_pag, comissionado;
+    public double taxa_mensal_sindicato;
+    public int id, id_sindicato, escolha_pag;
     public boolean is_sindicate;
 
     void sindicate(int id_sindicato, double taxa_mensal_sindicato)

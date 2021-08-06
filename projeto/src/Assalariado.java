@@ -7,7 +7,10 @@ public class Assalariado extends Empregado{
     
     LinkedList<Resultado_venda> venda_list = new LinkedList<>();
 
-    Assalariado(String name, String endereco, double salario_assalariado, int comissionado, double comissao, int id, boolean is_sindicate, int escolha_pag)
+    double comissao, salario_assalariado;
+    int comissionado;
+
+    Assalariado(String name, String endereco, double salario_assalariado, int comissionado, double comissao, int id, boolean is_sindicate, int escolha_pag, String metodo_pag)
     {
         this.name = name;
         this.endereco = endereco;
@@ -17,5 +20,6 @@ public class Assalariado extends Empregado{
         this.comissionado = comissionado;
         this.is_sindicate = is_sindicate;
         this.escolha_pag = escolha_pag;
+        this.metodo_pag = metodo_pag;
     }
 }

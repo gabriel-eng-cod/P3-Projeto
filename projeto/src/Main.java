@@ -4,8 +4,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
 
-        Empregados empregado = new Empregados();
-        //Cartao_de_ponto cartao = new Cartao_de_ponto();
+        Funcoes empregado = new Funcoes();
 
         Scanner input = new Scanner(System.in);
 
@@ -23,8 +22,10 @@ public class Main {
             System.out.println("|4) Lançar um resultado venda        |");
             System.out.println("|5) Lançar uma taxa de serviço       |");
             System.out.println("|6) Alterar detalhes de um empregado |");
-            System.out.println("|7) Sair do sistema                  |");
-            System.out.println("|8) Listar funcionários              |");
+            System.out.println("|7) Criar nova agenda de pagamento   |");
+            System.out.println("|8) Rodar folha de pagamento         |");
+            System.out.println("|9) Sair do sistema                  |");
+            System.out.println("|10) Listar funcionários             |");
             System.out.println("|____________________________________|\n");
 
             System.out.printf("-> ");
@@ -33,7 +34,7 @@ public class Main {
 
             System.out.println();
 
-            if(chave < 1 || chave > 8)
+            if(chave < 1 || chave > 10)
             {
                 System.out.println("Insira uma opção válida");
             }
@@ -68,11 +69,15 @@ public class Main {
                 {
                     empregado.alterar_info();
                 }
+                else if(chave == 7)
+                {
+                    empregado.criar_nova_agenda();
+                }
                 else if(chave == 8)
                 {
-                    empregado.listar_funcionarios();
+                    empregado.rodar_folha();
                 }
-                else
+                else if(chave == 9)
                 {
                     System.out.println("Tem certeza que deseja sair do sistema?\n\n1) Sair\n2) Continuar navegando\n");
 
@@ -85,6 +90,10 @@ public class Main {
                         System.out.println("Obrigado por utilizar nosso sistema!\n\n");
                         break;
                     }
+                }
+                else
+                {
+                    empregado.listar_funcionarios();
                 }
             }
         

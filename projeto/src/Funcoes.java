@@ -1,17 +1,18 @@
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Scanner;
-
-//import javax.lang.model.util.ElementScanner6;
-//import javax.xml.validation.Validator;
-
 import java.util.LinkedList;
-//import java.util.List;
 
-public class Empregados {
+public class Funcoes {
     
     LinkedList<Horista> horista_list = new LinkedList<>();
     int quant_horista = 0;
+
     LinkedList<Assalariado> assalariado_list = new LinkedList<>();
     int quant_assalariado = 0;
+
+    Agenda_Pagamento agenda = new Agenda_Pagamento();
+
     int id = 1;
     int id_sindicato = 1;
 
@@ -57,7 +58,7 @@ public class Empregados {
 
     void add_horista()
     {
-        String name;
+        String name, metodo_pag;
         String endereco;
         double salario_hora, taxa_mensal_sindicato = 0;
         int sindicate;
@@ -101,16 +102,32 @@ public class Empregados {
         input.nextLine();
         System.out.println();
 
+        System.out.printf("Qual o forma de pagamento que o funcionário irá receber?\n\n");
+
+        agenda.listar();
+
+        int escolha_agenda = input.nextInt();
+        input.nextLine();
+
+        int i;
+
+        for(i = 0; i < agenda.formas_pagamento.size(); i++)
+        {
+            if(escolha_agenda == i+1)
+            {
+                break;
+            }
+        }
+
+        metodo_pag = agenda.formas_pagamento.get(i);
+
         System.out.printf("Qual o tipo de pagamento?\n\n1) Cheque pelos correios\n2) Cheque em mãos\n3) Depósito em conta bancária\n\n-> ");
         
         int escolha_pag = input.nextInt();
 
         System.out.printf("O ID do funcionário é %d\n", id);
 
-        //System.out.printf("%s\n", name);
-
-        Horista horis = new Horista(name, endereco, salario_hora, id, is_sindicate, escolha_pag);
-        //System.out.printf("%s\n", horis.get_name());
+        Horista horis = new Horista(name, endereco, salario_hora, id, is_sindicate, escolha_pag, metodo_pag);
 
         if(sindicate == 1)
         {
@@ -126,6 +143,7 @@ public class Empregados {
     void add_assalariado()
     {
         String name;
+        String metodo_pag;
         String endereco;
         double salario_assalariado, taxa_mensal_sindicato = 0;
         int comissionado;
@@ -185,7 +203,24 @@ public class Empregados {
             System.out.println();
         }
 
-        //String id_assalariado = UUID.randomUUID().toString();
+        System.out.printf("Qual o forma de pagamento que o funcionário irá receber?\n\n");
+
+        agenda.listar();
+
+        int escolha_agenda = input.nextInt();
+        input.nextLine();
+
+        int i;
+
+        for(i = 0; i < agenda.formas_pagamento.size(); i++)
+        {
+            if(escolha_agenda == i+1)
+            {
+                break;
+            }
+        }
+
+        metodo_pag = agenda.formas_pagamento.get(i);
 
         System.out.printf("Qual o tipo de pagamento?\n\n1) Cheque pelos correios\n2) Cheque em mãos\n3) Depósito em conta bancária\n\n-> ");
         
@@ -193,7 +228,7 @@ public class Empregados {
 
         System.out.printf("O ID do funcionário é %d\n", id);
 
-        Assalariado assal = new Assalariado(name, endereco, salario_assalariado, comissionado, comissao, id, is_sindicate, escolha_pag);
+        Assalariado assal = new Assalariado(name, endereco, salario_assalariado, comissionado, comissao, id, is_sindicate, escolha_pag, metodo_pag);
 
         id++;
 
@@ -352,7 +387,6 @@ public class Empregados {
         }
 
         System.out.println();
-        //Iterator i = horista_list.iterator();
     }
 
     void remove_empregado()
@@ -600,40 +634,43 @@ public class Empregados {
 
                         int comi = input.nextInt();
 
+                        double valor_comissao = 0;
+
                         if(comi == 1)
                         {
                             System.out.printf("Qual o valor da comissão?\n\n-> ");
 
-                            double valor = input.nextDouble();
-
-                            System.out.printf("Digite o salário do funcionário assalariado\n\n-> ");
-
-                            double salario_assalariado = input.nextDouble();
-
-                            add_assalariado_aux(horista.name, horista.endereco, salario_assalariado, 1, valor, horista.id, horista.is_sindicate, horista.escolha_pag, horista.id_sindicato, horista.taxa_mensal_sindicato);
-                            
-                            quant_assalariado++;
+                            valor_comissao = input.nextDouble();
                         }
-                        else
+                        
+                        System.out.printf("Digite o salário do funcionário assalariado\n\n-> ");
+
+                        double salario_assalariado = input.nextDouble();
+
+                        Assalariado novo = new Assalariado(horista.name, horista.endereco, salario_assalariado, comi, valor_comissao, horista.id, horista.is_sindicate, horista.escolha_pag, horista.metodo_pag);
+                        
+                        if(horista.is_sindicate)
                         {
-                            System.out.printf("Digite o salário do funcionário assalariado\n\n-> ");
-
-                            double salario_assalariado = input.nextDouble();
-
-                            add_assalariado_aux(horista.name, horista.endereco, salario_assalariado, 2, 0, horista.id, horista.is_sindicate, horista.escolha_pag, horista.id_sindicato, horista.taxa_mensal_sindicato);
-                
-                            quant_assalariado++;
+                            novo.sindicate(horista.id_sindicato, horista.taxa_mensal_sindicato);
                         }
+
+                        id++;
+
+                        id_sindicato++;
+
+                        assalariado_list.add(novo);
+                        quant_assalariado++;
+                        
 
                         for(int k = 0; k < quant_horista; k++)
                         {
                             Assalariado assalariado = assalariado_list.get(k);
 
-                            if(assalariado.id == id)
+                            if(assalariado.id == novo.id)
                             {
                                 for(Taxa_de_servico taxa : horista.taxa_list)
                                 {
-                                    assalariado.taxa_list.add(taxa);
+                                    novo.taxa_list.add(taxa);
                                 }
                             }
                         }
@@ -706,7 +743,6 @@ public class Empregados {
                     }
                 }
             }       
-
         }
         else
         {
@@ -738,18 +774,29 @@ public class Empregados {
 
                         double salario_horista = input.nextDouble();
 
-                        add_horista_aux(assalariado.name, assalariado.endereco, salario_horista, id, assalariado.is_sindicate, assalariado.escolha_pag, assalariado.id_sindicato, assalariado.taxa_mensal_sindicato);
+                        Horista novo = new Horista(assalariado.name, assalariado.endereco, salario_horista, assalariado.id, assalariado.is_sindicate, assalariado.escolha_pag, assalariado.metodo_pag);
+                        
+                        if(assalariado.is_sindicate)
+                        {
+                            novo.sindicate(assalariado.id_sindicato, assalariado.taxa_mensal_sindicato);
+                        }
+
+                        id++;
+                        id_sindicato++;
+
+                        horista_list.add(novo);
+                        
                         quant_horista++;
                         
                         for(int k = 0; k < quant_horista; k++)
                         {
                             Horista horista = horista_list.get(k);
 
-                            if(horista.id == id)
+                            if(horista.id == novo.id)
                             {
                                 for(Taxa_de_servico taxa : assalariado.taxa_list)
                                 {
-                                    horista.taxa_list.add(taxa);
+                                    novo.taxa_list.add(taxa);
                                 }
                                 break;
                             }
@@ -824,34 +871,175 @@ public class Empregados {
         }
     }
 
-    void add_horista_aux(String name, String endereco, double salario, int id, boolean is_sindicate, int escolha_pag, int id_sindicato, double taxa_mensal_sindicato)
+    void criar_nova_agenda()
     {
-        Horista horis = new Horista(name, endereco, salario, id, is_sindicate, escolha_pag);
-
-        if(is_sindicate)
-        {
-            horis.sindicate(id_sindicato, taxa_mensal_sindicato);
-        }
-
-        id++;
-        id_sindicato++;
-
-        horista_list.add(horis);
+        agenda.criar_nova_agenda();
     }
 
-    void add_assalariado_aux(String name, String endereco, double salario_assalariado, int comissionado, double comissao, int id, boolean is_sindicate, int escolha_pag, int id_sindicato, double taxa_mensal_sindicato)
+    void rodar_folha()
     {
-        Assalariado assal = new Assalariado(name, endereco, salario_assalariado, comissionado, comissao, id, is_sindicate, escolha_pag);
+        LocalDate data = LocalDate.now();
+        Calendar calendario = Calendar.getInstance();
 
-        if(is_sindicate)
+        String dia_atual = data.getDayOfWeek().name();
+
+        if(dia_atual == "MONDAY")
         {
-            assal.sindicate(id_sindicato, taxa_mensal_sindicato);
+            dia_atual = "Segunda";
+        }
+        else if(dia_atual == "TUESDAY")
+        {
+            dia_atual = "Terça";
+        }
+        else if(dia_atual == "WEDNESDAY")
+        {
+            dia_atual = "Quarta";
+        }
+        else if(dia_atual == "THURSDAY")
+        {
+            dia_atual = "Terça";
+        }
+        else if(dia_atual == "FRIDAY")
+        {
+            dia_atual = "Sexta";
         }
 
-        id++;
+        int semana_atual = calendario.get(Calendar.WEEK_OF_MONTH);
+        int dia = data.getDayOfMonth();
 
-        id_sindicato++;
+        System.out.printf("Funcionários Horistas que devem ser pagos hoje:\n\n");
 
-        assalariado_list.add(assal);
+        String pagamento;
+        double salario;
+
+        for (Horista horista : horista_list) 
+        {
+            pagamento = horista.metodo_pag;
+
+            salario = 0;
+
+            for (Cartao_de_ponto card : horista.cartao_list) 
+            {
+                if(card.horas_trabalhadas > 8)
+                {
+                    salario += 8 * horista.salario_hora;
+                    salario += (card.horas_trabalhadas - 8) * (0.0015*horista.salario_hora + horista.salario_hora);
+                }
+                else
+                {
+                    salario += (card.horas_trabalhadas)*horista.salario_hora;
+                }
+            }
+
+            if(horista.is_sindicate)
+            {
+                salario -= horista.taxa_mensal_sindicato;
+
+                for (Taxa_de_servico taxas : horista.taxa_list) 
+                {
+                    salario -= taxas.valor;
+                }
+            }
+
+            if(pagamento.contains(dia_atual))
+            {
+                if(pagamento.contains("1"))
+                {
+                    System.out.printf("Nome: %s\n", horista.name);
+
+                    System.out.printf("A receber: %.2f\n\n", salario);
+                }
+                else if(pagamento.contains("2"))
+                {
+                    if(semana_atual == 2 || semana_atual == 4)
+                    {
+                        System.out.printf("Nome: %s\n", horista.name);
+
+                        System.out.printf("A receber: %.2f\n\n", salario);
+                    }
+                }
+            }
+        }
+
+        System.out.printf("Funcionários Assalariados que devem ser pagos hoje:\n\n");
+
+        for (Assalariado assalariado : assalariado_list) 
+        {
+            pagamento = assalariado.metodo_pag;
+
+            salario = 0;
+            double comissao;
+
+            salario += assalariado.salario_assalariado;
+
+            if(assalariado.comissionado == 1)
+            {
+                comissao = (assalariado.comissao)/100;
+
+                for (Resultado_venda vendas : assalariado.venda_list)
+                {
+                    salario += (vendas.valor_do_produto)*comissao;
+                }
+            }
+
+            if(assalariado.is_sindicate)
+            {
+                salario -= assalariado.taxa_mensal_sindicato;
+
+                for (Taxa_de_servico taxas : assalariado.taxa_list) 
+                {
+                    salario -= taxas.valor;
+                }
+            }
+
+            if(assalariado.comissionado == 1)
+            {
+                if(pagamento.contains(dia_atual))
+                {
+                    if(pagamento.contains("1"))
+                    {
+                        System.out.printf("Nome: %s\n", assalariado.name);
+
+                        System.out.printf("A receber: %.2f\n\n", salario);
+                    }
+                    else if(pagamento.contains("2"))
+                    {
+                        if(semana_atual == 2 || semana_atual == 4)
+                        {
+                            System.out.printf("Nome: %s\n", assalariado.name);
+
+                            System.out.printf("A receber: %.2f\n\n", salario);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if(pagamento.contains("Mensal"))
+                {
+                    if(pagamento.contains("$"))
+                    {
+                        if(dia == 30)
+                        {
+                            System.out.printf("Nome: %s\n", assalariado.name);
+
+                            System.out.printf("A receber: %.2f\n\n", salario);
+                        }
+                    }
+                    else
+                    {
+                        char numero = pagamento.charAt(7);
+                        int aux = Character.getNumericValue(numero);
+
+                        if(dia == aux)
+                        {
+                            System.out.printf("Nome: %s\n", assalariado.name);
+
+                            System.out.printf("A receber: %.2f\n\n", salario);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

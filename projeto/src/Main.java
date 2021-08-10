@@ -6,6 +6,8 @@ public class Main {
 
         Funcoes empregado = new Funcoes();
 
+        int last_action = 0;
+
         Scanner input = new Scanner(System.in);
 
         System.out.println("Bem vindo à Folha de Pagamento");
@@ -22,10 +24,12 @@ public class Main {
             System.out.println("|4) Lançar um resultado venda        |");
             System.out.println("|5) Lançar uma taxa de serviço       |");
             System.out.println("|6) Alterar detalhes de um empregado |");
-            System.out.println("|7) Criar nova agenda de pagamento   |");
-            System.out.println("|8) Rodar folha de pagamento         |");
-            System.out.println("|9) Sair do sistema                  |");
-            System.out.println("|10) Listar funcionários             |");
+            System.out.println("|7) Rodar folha de pagamento         |");
+            System.out.println("|8) Undo                             |");
+            System.out.println("|9) Redo                             |");
+            System.out.println("|10) Criar nova agenda de pagamento  |");
+            System.out.println("|11) Sair do sistema                 |");
+            System.out.println("|12) Listar funcionários             |");
             System.out.println("|____________________________________|\n");
 
             System.out.printf("-> ");
@@ -34,7 +38,12 @@ public class Main {
 
             System.out.println();
 
-            if(chave < 1 || chave > 10)
+            if(chave != 8 && chave != 9 && chave != 12)
+            {
+                last_action = chave;
+            }
+
+            if(chave < 1 || chave > 12)
             {
                 System.out.println("Insira uma opção válida");
             }
@@ -71,13 +80,353 @@ public class Main {
                 }
                 else if(chave == 7)
                 {
-                    empregado.criar_nova_agenda();
+                    empregado.rodar_folha();
                 }
                 else if(chave == 8)
                 {
-                    empregado.rodar_folha();
+                    if(last_action == 1)
+                    {
+                        if(empregado.auxiliares.adicionado == 1)
+                        {
+                            empregado.horista_list.removeLast();
+                        }
+                        else
+                        {
+                            empregado.assalariado_list.removeLast();
+                        }
+                    }
+                    else if(last_action == 2)
+                    {
+                        if(empregado.auxiliares.removido == 1)
+                        {
+                            empregado.horista_list.add(empregado.auxiliares.horis);
+                        }
+                        else
+                        {
+                            empregado.assalariado_list.add(empregado.auxiliares.assal);
+                        }
+                    }
+                    else if(last_action == 3)
+                    {
+                        for (Horista horista : empregado.horista_list)
+                        {
+                            if(horista.id == empregado.auxiliares.id_card)
+                            {
+                                horista.cartao_list.removeLast();
+                                break;
+                            }    
+                        }
+                    }
+                    else if(last_action == 4)
+                    {
+                        for (Assalariado assalariado : empregado.assalariado_list)
+                        {
+                            if(assalariado.id == empregado.auxiliares.id_venda)
+                            {
+                                assalariado.venda_list.removeLast();
+                                break;
+                            }    
+                        }
+                    }
+                    else if(last_action == 5)
+                    {
+                        boolean verificado = false;
+                        for (Horista horista : empregado.horista_list)
+                        {
+                            if(horista.id == empregado.auxiliares.id_taxa)
+                            {
+                                verificado = true;
+                                horista.taxa_list.removeLast();
+                                break;
+                            }    
+                        }
+
+                        if(!verificado)
+                        {
+                            for (Assalariado assalariado : empregado.assalariado_list)
+                            {
+                                if(assalariado.id == empregado.auxiliares.id_taxa)
+                                {
+                                    verificado = true;
+                                    assalariado.taxa_list.removeLast();
+                                    break;
+                                }    
+                            }
+                        }
+                    }
+                    else if(last_action == 6)
+                    {
+                        int x = empregado.auxiliares.escolha_alteracao;
+                        int id = empregado.auxiliares.id_alteracao;
+                        int h_ou_a = empregado.auxiliares.horis_ou_assal;
+
+                        if(h_ou_a == 1) //horista
+                        {
+                            for (Horista horista : empregado.horista_list)
+                            {
+                                if(horista.id == id)
+                                {
+                                    if(x == 1)
+                                    {
+                                        horista.name = empregado.auxiliares.nome;
+                                        break;
+                                    }
+                                    else if(x == 2)
+                                    {
+                                        horista.endereco = empregado.auxiliares.endereco;
+                                        break;
+                                    }
+                                    else if(x == 4)
+                                    {
+                                        horista.escolha_pag = empregado.auxiliares.escolha_pag;
+                                        break;
+                                    }
+                                    else if(x == 5)
+                                    {
+                                        horista.is_sindicate = empregado.auxiliares.is_sindicate;
+                                        break;
+                                    }
+                                    else if(x == 6)
+                                    {
+                                        horista.id_sindicato = empregado.auxiliares.id_sindicato;
+                                        break;
+                                    }
+                                    else if(x == 7)
+                                    {
+                                        horista.taxa_mensal_sindicato = empregado.auxiliares.taxa_sindical;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        empregado.horista_list.add(empregado.auxiliares.horis);
+                                        empregado.assalariado_list.removeLast();
+                                    }
+                                }    
+                            }    
+                        }
+                        else
+                        {
+                            for (Assalariado assalariado : empregado.assalariado_list)
+                            {
+                                if(assalariado.id == id)
+                                {
+                                    if(x == 1)
+                                    {
+                                        assalariado.name = empregado.auxiliares.nome;
+                                        break;
+                                    }
+                                    else if(x == 2)
+                                    {
+                                        assalariado.endereco = empregado.auxiliares.endereco;
+                                        break;
+                                    }
+                                    else if(x == 4)
+                                    {
+                                        assalariado.escolha_pag = empregado.auxiliares.escolha_pag;
+                                        break;
+                                    }
+                                    else if(x == 5)
+                                    {
+                                        assalariado.is_sindicate = empregado.auxiliares.is_sindicate;
+                                        break;
+                                    }
+                                    else if(x == 6)
+                                    {
+                                        assalariado.id_sindicato = empregado.auxiliares.id_sindicato;
+                                        break;
+                                    }
+                                    else if(x == 7)
+                                    {
+                                        assalariado.taxa_mensal_sindicato = empregado.auxiliares.taxa_sindical;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        empregado.assalariado_list.add(empregado.auxiliares.assal);
+                                        empregado.horista_list.removeLast();
+                                    }
+                                }    
+                            } 
+                        }
+                    }
+
+                    System.out.println("\nComando desfeito com sucesso!\n");
                 }
                 else if(chave == 9)
+                {
+                    if(last_action == 1)
+                    {
+                        if(empregado.auxiliares.adicionado == 1)
+                        {
+                            empregado.horista_list.add(empregado.auxiliares.horis);
+                        }
+                        else
+                        {
+                            empregado.assalariado_list.add(empregado.auxiliares.assal);
+                        }
+                    }
+                    else if(last_action == 2)
+                    {
+                        if(empregado.auxiliares.removido == 1)
+                        {
+                            empregado.horista_list.removeLast();
+                        }
+                        else
+                        {
+                            empregado.assalariado_list.removeLast();
+                        }
+                    }
+                    else if(last_action == 3)
+                    {
+                        for (Horista horista : empregado.horista_list)
+                        {
+                            if(horista.id == empregado.auxiliares.id_card)
+                            {
+                                horista.cartao_list.add(empregado.auxiliares.card);
+                                break;
+                            }    
+                        }
+                    }
+                    else if(last_action == 4)
+                    {
+                        for (Assalariado assalariado : empregado.assalariado_list)
+                        {
+                            if(assalariado.id == empregado.auxiliares.id_venda)
+                            {
+                                assalariado.venda_list.add(empregado.auxiliares.sale);
+                                break;
+                            }    
+                        }
+                    }
+                    else if(last_action == 5)
+                    {
+                        boolean verificado = false;
+                        for (Horista horista : empregado.horista_list)
+                        {
+                            if(horista.id == empregado.auxiliares.id_taxa)
+                            {
+                                verificado = true;
+                                horista.taxa_list.add(empregado.auxiliares.taxa_horista);
+                                break;
+                            }    
+                        }
+
+                        if(!verificado)
+                        {
+                            for (Assalariado assalariado : empregado.assalariado_list)
+                            {
+                                if(assalariado.id == empregado.auxiliares.id_taxa)
+                                {
+                                    verificado = true;
+                                    assalariado.taxa_list.add(empregado.auxiliares.taxa_assalariado);
+                                    break;
+                                }    
+                            }
+                        }
+                    }
+                    else if(last_action == 6)
+                    {
+                        int x = empregado.auxiliares.escolha_alteracao;
+                        int id = empregado.auxiliares.id_alteracao;
+                        int h_ou_a = empregado.auxiliares.horis_ou_assal;
+
+                        if(h_ou_a == 1) //horista
+                        {
+                            for (Horista horista : empregado.horista_list)
+                            {
+                                if(horista.id == id)
+                                {
+                                    if(x == 1)
+                                    {
+                                        horista.name = empregado.auxiliares.nome_alterado;
+                                        break;
+                                    }
+                                    else if(x == 2)
+                                    {
+                                        horista.endereco = empregado.auxiliares.endereco_alterado;
+                                        break;
+                                    }
+                                    else if(x == 4)
+                                    {
+                                        horista.escolha_pag = empregado.auxiliares.escolha_pag_alterada;
+                                        break;
+                                    }
+                                    else if(x == 5)
+                                    {
+                                        horista.is_sindicate = empregado.auxiliares.is_sindicate_alterado;
+                                        break;
+                                    }
+                                    else if(x == 6)
+                                    {
+                                        horista.id_sindicato = empregado.auxiliares.id_sindicato_alterado;
+                                        break;
+                                    }
+                                    else if(x == 7)
+                                    {
+                                        horista.taxa_mensal_sindicato = empregado.auxiliares.taxa_sindical_alterada;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        empregado.horista_list.removeLast();
+                                        empregado.assalariado_list.add(empregado.auxiliares.assal);
+                                    }
+                                }    
+                            }    
+                        }
+                        else
+                        {
+                            for (Assalariado assalariado : empregado.assalariado_list)
+                            {
+                                if(assalariado.id == id)
+                                {
+                                    if(x == 1)
+                                    {
+                                        assalariado.name = empregado.auxiliares.nome_alterado;
+                                        break;
+                                    }
+                                    else if(x == 2)
+                                    {
+                                        assalariado.endereco = empregado.auxiliares.endereco_alterado;
+                                        break;
+                                    }
+                                    else if(x == 4)
+                                    {
+                                        assalariado.escolha_pag = empregado.auxiliares.escolha_pag_alterada;
+                                        break;
+                                    }
+                                    else if(x == 5)
+                                    {
+                                        assalariado.is_sindicate = empregado.auxiliares.is_sindicate_alterado;
+                                        break;
+                                    }
+                                    else if(x == 6)
+                                    {
+                                        assalariado.id_sindicato = empregado.auxiliares.id_sindicato_alterado;
+                                        break;
+                                    }
+                                    else if(x == 7)
+                                    {
+                                        assalariado.taxa_mensal_sindicato = empregado.auxiliares.taxa_sindical_alterada;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        empregado.assalariado_list.removeLast();
+                                        empregado.horista_list.add(empregado.auxiliares.horis);
+                                    }
+                                }    
+                            } 
+                        }
+                    }
+
+                    System.out.println("\nComando refeito com sucesso!\n");
+                }
+                else if(chave == 10)
+                {
+                    empregado.criar_nova_agenda();
+                }
+                else if(chave == 11)
                 {
                     System.out.println("Tem certeza que deseja sair do sistema?\n\n1) Sair\n2) Continuar navegando\n");
 

@@ -3,18 +3,22 @@ import java.util.Calendar;
 import java.util.Scanner;
 import java.util.LinkedList;
 
-public class Funcoes {
+public class Funcoes implements Cloneable{
     
     LinkedList<Horista> horista_list = new LinkedList<>();
+    //LinkedList<Horista> horista_list_aux = new LinkedList<>();
     int quant_horista = 0;
 
     LinkedList<Assalariado> assalariado_list = new LinkedList<>();
+    LinkedList<Assalariado> assalariado_list_aux = new LinkedList<>();
     int quant_assalariado = 0;
 
     Agenda_Pagamento agenda = new Agenda_Pagamento();
 
+    Historico auxiliares = new Historico();
+
     int id = 1;
-    int id_sindicato = 1;
+    int id_sindicato = 2;
 
     Scanner input = new Scanner(System.in);
 
@@ -33,6 +37,8 @@ public class Funcoes {
             input.nextLine();
 
             System.out.println();
+
+            auxiliares.adicionado = chave;
 
             if(chave != 1 && chave != 2)
             {
@@ -106,6 +112,8 @@ public class Funcoes {
 
         agenda.listar();
 
+        System.out.println("\n->");
+
         int escolha_agenda = input.nextInt();
         input.nextLine();
 
@@ -138,6 +146,8 @@ public class Funcoes {
         id_sindicato++;
 
         horista_list.add(horis);
+        //horista_list_aux.add(horis);
+        auxiliares.horis = horis;
     }
 
     void add_assalariado()
@@ -203,9 +213,11 @@ public class Funcoes {
             System.out.println();
         }
 
-        System.out.printf("Qual o forma de pagamento que o funcionário irá receber?\n\n");
+        System.out.printf("\nQual o forma de pagamento que o funcionário irá receber?\n\n");
 
         agenda.listar();
+
+        System.out.printf("\n-> ");
 
         int escolha_agenda = input.nextInt();
         input.nextLine();
@@ -240,19 +252,21 @@ public class Funcoes {
         id_sindicato++;
 
         assalariado_list.add(assal);
+        assalariado_list_aux.add(assal);
+        auxiliares.assal = assal;
     }
 
     void listar_funcionarios()
     {
         System.out.println("Funcionários que trabalham como horistas:\n");
 
-        if(quant_horista == 0)
+        if(horista_list.size() == 0)
         {
             System.out.println("Vazio");
         }
         else
         {
-            for (int i = 0; i < quant_horista; i++) 
+            for (int i = 0; i < horista_list.size(); i++) 
             {
                 Horista funcionario = horista_list.get(i);
 
@@ -314,13 +328,13 @@ public class Funcoes {
 
         System.out.println("Funcionários que trabalham como assalariados:\n");
 
-        if(quant_assalariado == 0)
+        if(assalariado_list.size() == 0)
         {
             System.out.println("Vazio");
         }
         else
         {
-            for (int i = 0; i < quant_assalariado; i++) 
+            for (int i = 0; i < assalariado_list.size(); i++) 
             {
                 Assalariado funcionario = assalariado_list.get(i);
 
@@ -398,6 +412,8 @@ public class Funcoes {
         input.nextLine();
         System.out.println();
 
+        auxiliares.removido = escolha;
+
         System.out.println("Digite o id do funcionário que deseja remover\n");
 
         System.out.printf("-> ");
@@ -411,6 +427,7 @@ public class Funcoes {
             {
                 if(funcionario.id == chave)
                 {
+                    auxiliares.horis = funcionario;
                     horista_list.remove(funcionario);
                     quant_horista--;
                     break;
@@ -423,6 +440,7 @@ public class Funcoes {
             {
                 if(funcionario.id == chave)
                 {
+                    auxiliares.assal = funcionario;
                     assalariado_list.remove(funcionario);
                     quant_assalariado--;
                     break;
@@ -437,6 +455,8 @@ public class Funcoes {
 
         int id = input.nextInt();
         input.nextLine();
+
+        auxiliares.id_card = id;
 
         System.out.printf("Digite a data do dia trabalhado (DD/MM/AA): ");
 
@@ -462,6 +482,8 @@ public class Funcoes {
                 break;
             }    
         }
+
+        auxiliares.card = card;
     }
     
     void add_venda()
@@ -470,6 +492,8 @@ public class Funcoes {
 
         int id = input.nextInt();
         input.nextLine();
+
+        auxiliares.id_venda = id;
 
         System.out.printf("Digite a data da venda (DD/MM/AA): ");
 
@@ -495,6 +519,8 @@ public class Funcoes {
                 break;
             }    
         }
+
+        auxiliares.sale = venda;
     }
 
     void add_taxa_de_servico()
@@ -503,6 +529,8 @@ public class Funcoes {
 
         int id = input.nextInt();
         input.nextLine();
+
+        auxiliares.id_taxa = id;
 
         System.out.println();
 
@@ -528,6 +556,7 @@ public class Funcoes {
             if(horista.id == id)
             {
                 horista.taxa_list.add(taxa_de_servico);
+                auxiliares.taxa_assalariado = taxa_de_servico;
                 return;
             }    
         }
@@ -537,17 +566,20 @@ public class Funcoes {
             if(assalariado.id == id)
             {
                 assalariado.taxa_list.add(taxa_de_servico);
+                auxiliares.taxa_horista = taxa_de_servico;
                 return;
             }    
         }
     }
 
-    void alterar_info()
+    void alterar_info() //throws CloneNotSupportedException
     {
         System.out.printf("Qual o id do empregado que você deseja alterar os dados? ");
 
         System.out.printf("-> ");
         int id = input.nextInt();
+        
+        auxiliares.id_alteracao = id;
 
         System.out.println();
 
@@ -555,6 +587,8 @@ public class Funcoes {
         {
             if(horista.id == id)
             {
+                //auxiliares.horis = horista;
+                auxiliares.horis_ou_assal = 1;
                 System.out.printf("O ID informado pertence ao funcionário %s.\n\n", horista.name);
                 System.out.printf("Qual dado você deseja alterar?\n\n");
                 System.out.printf("1) Nome\n");
@@ -568,9 +602,12 @@ public class Funcoes {
                 System.out.printf("-> ");
                 int escolha = input.nextInt();
 
+                auxiliares.escolha_alteracao = escolha;
+
                 System.out.println();
 
                 alterar(escolha, id, 1);
+                id++;
                 return;
             }    
         }
@@ -579,6 +616,8 @@ public class Funcoes {
         {
             if(assalariado.id == id)
             {
+                auxiliares.assal = assalariado;
+                auxiliares.horis_ou_assal = 2;
                 System.out.printf("O ID informado pertence ao funcionário %s.\n\n", assalariado.name);
                 System.out.printf("Qual dado você deseja alterar?\n\n");
                 System.out.printf("1) Nome\n");
@@ -592,9 +631,12 @@ public class Funcoes {
                 System.out.printf("-> ");
                 int escolha = input.nextInt();
 
+                auxiliares.escolha_alteracao = escolha;
+
                 System.out.println();
 
                 alterar(escolha, id, 2);
+                id++;
                 return;
             }    
         }
@@ -602,20 +644,21 @@ public class Funcoes {
 
     void alterar(int escolha, int id, int hor_ou_ass) //último parâmetro verifica se o funcio. é horista ou assalariado
     {
-        //int id_aux;
         if(hor_ou_ass == 1)
         {
-            for(int i = 0; i < quant_horista; i++)
+            for(Horista horista : horista_list)
             {
-                Horista horista = horista_list.get(i);
-
                 if(horista.id == id)
                 {
                     if(escolha == 1)
                     {
                         System.out.printf("O nome do funcionário é %s.\n", horista.name);
 
-                        horista.alterar_nome(horista_list.get(i));
+                        auxiliares.nome = horista.name;
+
+                        horista.alterar_nome(horista);
+
+                        auxiliares.nome_alterado = horista.name;
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
@@ -623,13 +666,18 @@ public class Funcoes {
                     {
                         System.out.printf("O endereço do funcionário é %s.\n", horista.endereco);
 
-                        horista.alterar_endereco(horista_list.get(i));
+                        auxiliares.endereco = horista.endereco;
+
+                        horista.alterar_endereco(horista);
+
+                        auxiliares.endereco_alterado = horista.endereco;
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 3)
                     {
-                        System.out.printf("O funcionário é horista e passará a ser assalariado.\n");
+                        auxiliares.horis = horista;
+                        System.out.printf("O funcionário é horista e passará a ser assalariado.\n\n");
                         System.out.printf("O funcionário receberá comissão?\n1) Sim\n2) Não\n\n-> ");
 
                         int comi = input.nextInt();
@@ -654,11 +702,12 @@ public class Funcoes {
                             novo.sindicate(horista.id_sindicato, horista.taxa_mensal_sindicato);
                         }
 
-                        id++;
+                        //id++;
 
                         id_sindicato++;
 
                         assalariado_list.add(novo);
+                        
                         quant_assalariado++;
                         
 
@@ -675,12 +724,15 @@ public class Funcoes {
                             }
                         }
 
+                        auxiliares.assal = novo;
+
                         for (int j = 0; j < quant_horista; j++)
                         {
-                            Horista func = horista_list.get(i);
+                            Horista func = horista_list.get(j);
 
                             if(func.id == id)
                             {
+                                System.out.printf("ENTREI NESSA PORRA");
                                 horista_list.remove(func);
                                 quant_horista--;
                                 break;
@@ -693,6 +745,7 @@ public class Funcoes {
                     else if(escolha == 4)
                     {
                         System.out.printf("O método de pagamento do funcionário é ");
+                        auxiliares.escolha_pag = horista.escolha_pag;
                         if(horista.escolha_pag == 1)
                         {
                             System.out.printf("Cheque pelos correios\n\n");
@@ -709,38 +762,50 @@ public class Funcoes {
                             System.out.printf("Qual o novo método de pagamento?\n1) Cheque pelos correios\n3) Cheque em mãos\n");
                         }
 
-                        horista.alterar_meth_pag(horista_list.get(i));
+                        horista.alterar_meth_pag(horista);
+
+                        auxiliares.escolha_pag_alterada = horista.escolha_pag;
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 5)
                     {
+                        auxiliares.is_sindicate = horista.is_sindicate;
+
                         if(horista.is_sindicate)
                         {
                             System.out.printf("O funcionário pertencia ao sindicato e agora não pertence mais.\n");
-                            horista.alterar_is_sind(horista_list.get(i));
+                            horista.alterar_is_sind(horista);
                         }
                         else
                         {
                             System.out.printf("O funcionário não pertencia ao sindicato e agora pertence.\n");
-                            horista.alterar_is_sind(horista_list.get(i));
+                            horista.alterar_is_sind(horista);
                             id_sindicato++;
                         }
+
+                        auxiliares.is_sindicate_alterado = horista.is_sindicate;
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 6)
                     {
+                        auxiliares.id_sindicato = horista.id_sindicato;
                         System.out.printf("O ID do funcionário no sindicato é %d.\n", horista.id_sindicato);
-                        horista.alterar_id_sind(horista_list.get(i));
+                        horista.alterar_id_sind(horista);
+                        auxiliares.id_sindicato_alterado = horista.id_sindicato;
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else
                     {
+                        auxiliares.taxa_sindical = horista.taxa_mensal_sindicato;
                         System.out.printf("A taxa mensal do funcionário no sindicato é %.2f.\n", horista.taxa_mensal_sindicato);
-                        horista.alterar_taxa(horista_list.get(i));
+                        horista.alterar_taxa(horista);
+                        auxiliares.taxa_sindical_alterada = horista.taxa_mensal_sindicato;
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
+
+                    break;
                 }
             }       
         }
@@ -752,22 +817,29 @@ public class Funcoes {
                 {
                     if(escolha == 1)
                     {
+                        auxiliares.nome = assalariado.name;
                         System.out.printf("O nome do funcionário é %s.\n", assalariado.name);
                         
                         assalariado.alterar_nome(assalariado);
+
+                        auxiliares.nome_alterado = assalariado.name;
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 2)
                     {
+                        auxiliares.endereco = assalariado.endereco;
                         System.out.printf("O endereço do funcionário é %s.\n", assalariado.endereco);
 
                         assalariado.alterar_endereco(assalariado);
+
+                        auxiliares.endereco_alterado = assalariado.endereco;
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 3)
                     {
+                        auxiliares.assal = assalariado;
                         System.out.printf("O funcionário é assalariado e passará a ser horista.\n");
 
                         System.out.printf("Digite o salário do funcionário horista\n\n-> ");
@@ -781,7 +853,7 @@ public class Funcoes {
                             novo.sindicate(assalariado.id_sindicato, assalariado.taxa_mensal_sindicato);
                         }
 
-                        id++;
+                        //id++;
                         id_sindicato++;
 
                         horista_list.add(novo);
@@ -802,6 +874,8 @@ public class Funcoes {
                             }
                         }
 
+                        auxiliares.horis = novo;
+
                         for (Assalariado funcionario : assalariado_list)
                         {
                             if(funcionario.id == id)
@@ -817,6 +891,7 @@ public class Funcoes {
                     }
                     else if(escolha == 4)
                     {
+                        auxiliares.escolha_pag = assalariado.escolha_pag;
                         System.out.printf("O método de pagamento do funcionário é ");
                         if(assalariado.escolha_pag == 1)
                         {
@@ -834,12 +909,15 @@ public class Funcoes {
                             System.out.printf("Qual o novo método de pagamento?\n1) Cheque pelos correios\n3) Cheque em mãos\n");
                         }
 
+                        auxiliares.escolha_pag_alterada = assalariado.escolha_pag;
+
                         assalariado.alterar_meth_pag(assalariado);
 
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 5)
                     {
+                        auxiliares.is_sindicate = assalariado.is_sindicate;
                         if(assalariado.is_sindicate)
                         {
                             System.out.printf("O funcionário pertencia ao sindicato e agora não pertence mais.\n");
@@ -852,20 +930,28 @@ public class Funcoes {
                             id_sindicato++;
                         }
 
+                        auxiliares.is_sindicate_alterado = assalariado.is_sindicate;
+
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else if(escolha == 6)
                     {
+                        auxiliares.id_sindicato = assalariado.id_sindicato;
                         System.out.printf("O ID do funcionário no sindicato é %d.\n", assalariado.id_sindicato);
                         assalariado.alterar_id_sind(assalariado);
+                        auxiliares.id_sindicato_alterado = assalariado.id_sindicato;
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
                     else
                     {
+                        auxiliares.taxa_sindical = assalariado.taxa_mensal_sindicato;
                         System.out.printf("A taxa mensal do funcionário no sindicato é %.2f.\n", assalariado.taxa_mensal_sindicato);
                         assalariado.alterar_taxa(assalariado);
+                        auxiliares.taxa_sindical_alterada = assalariado.taxa_mensal_sindicato;
                         System.out.printf("\nAlteração realizada com sucesso\n\n");
                     }
+
+                    break;
                 }
             }
         }

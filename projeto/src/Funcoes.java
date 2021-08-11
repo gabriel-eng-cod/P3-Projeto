@@ -112,7 +112,7 @@ public class Funcoes implements Cloneable{
 
         agenda.listar();
 
-        System.out.println("\n->");
+        System.out.println("\n-> ");
 
         int escolha_agenda = input.nextInt();
         input.nextLine();
@@ -133,7 +133,7 @@ public class Funcoes implements Cloneable{
         
         int escolha_pag = input.nextInt();
 
-        System.out.printf("O ID do funcionário é %d\n", id);
+        System.out.printf("\nO ID do funcionário é %d\n", id);
 
         Horista horis = new Horista(name, endereco, salario_hora, id, is_sindicate, escolha_pag, metodo_pag);
 
@@ -146,7 +146,6 @@ public class Funcoes implements Cloneable{
         id_sindicato++;
 
         horista_list.add(horis);
-        //horista_list_aux.add(horis);
         auxiliares.horis = horis;
     }
 
@@ -238,7 +237,7 @@ public class Funcoes implements Cloneable{
         
         int escolha_pag = input.nextInt();
 
-        System.out.printf("O ID do funcionário é %d\n", id);
+        System.out.printf("\nO ID do funcionário é %d\n", id);
 
         Assalariado assal = new Assalariado(name, endereco, salario_assalariado, comissionado, comissao, id, is_sindicate, escolha_pag, metodo_pag);
 
@@ -258,11 +257,11 @@ public class Funcoes implements Cloneable{
 
     void listar_funcionarios()
     {
-        System.out.println("Funcionários que trabalham como horistas:\n");
+        System.out.println("*** Funcionários que trabalham como horistas: ***\n");
 
         if(horista_list.size() == 0)
         {
-            System.out.println("Vazio");
+            System.out.println("Vazio\n");
         }
         else
         {
@@ -294,13 +293,12 @@ public class Funcoes implements Cloneable{
                     System.out.printf("O funcionário faz parte do sindicato\n");
                     System.out.printf("Taxa mensal do sindicato: %.2f\n", funcionario.taxa_mensal_sindicato);
                     System.out.printf("ID do funcionário no sindicato: %d\n\n", funcionario.id_sindicato);
-                    System.out.println();
                     System.out.printf("Taxas de serviço do funcionário:\n\n");
 
                     for(Taxa_de_servico taxa : funcionario.taxa_list)
                     {
-                        System.out.printf("Descrição da taxa: %s\n", taxa.descricao);
-                        System.out.printf("Valor da taxa: %.2f\n", taxa.valor);
+                        System.out.printf("> Descrição da taxa: %s\n", taxa.descricao);
+                        System.out.printf("> Valor da taxa: %.2f\n", taxa.valor);
                         System.out.println();
                     }
                 }
@@ -309,24 +307,22 @@ public class Funcoes implements Cloneable{
                     System.out.printf("O funcionário não faz parte do sindicato\n\n");
                 }
 
-                System.out.printf("Cartões de pontos do funcionário %s:\n", funcionario.name);
+                System.out.printf("Cartões de pontos do funcionário %s:\n\n", funcionario.name);
                 
                 for(Cartao_de_ponto card : funcionario.cartao_list)
                 {
-                    System.out.printf("Data: %s\n", card.data);
-                    System.out.printf("Hora de entrada: %dh\n", card.in);
-                    System.out.printf("Hora de saída: %dh\n", card.out);
-                    System.out.printf("Horas trabalhadas no dia: %d horas\n", card.horas_trabalhadas);
+                    System.out.printf("> Data: %s\n", card.data);
+                    System.out.printf("> Hora de entrada: %dh\n", card.in);
+                    System.out.printf("> Hora de saída: %dh\n", card.out);
+                    System.out.printf("> Horas trabalhadas no dia: %d horas\n", card.horas_trabalhadas);
                     System.out.println();
                 }
 
-                System.out.println("===========================");
+                System.out.println("===========================\n");
             }
         }
 
-        System.out.println();
-
-        System.out.println("Funcionários que trabalham como assalariados:\n");
+        System.out.println("*** Funcionários que trabalham como assalariados: ***\n");
 
         if(assalariado_list.size() == 0)
         {
@@ -371,13 +367,12 @@ public class Funcoes implements Cloneable{
                     System.out.printf("O funcionário faz parte do sindicato\n");
                     System.out.printf("Taxa mensal do sindicato: %.2f\n", funcionario.taxa_mensal_sindicato);
                     System.out.printf("ID do funcionário no sindicato: %d\n\n", funcionario.id_sindicato);
-                    System.out.println();
                     System.out.printf("Taxas de serviço do funcionário:\n\n");
 
                     for(Taxa_de_servico taxa : funcionario.taxa_list)
                     {
-                        System.out.printf("Descrição da taxa: %s\n", taxa.descricao);
-                        System.out.printf("Valor da taxa: %.2f\n", taxa.valor);
+                        System.out.printf("> Descrição da taxa: %s\n", taxa.descricao);
+                        System.out.printf("> Valor da taxa: %.2f\n", taxa.valor);
                         System.out.println();
                     }
                 }
@@ -386,17 +381,17 @@ public class Funcoes implements Cloneable{
                     System.out.printf("O funcionário não faz parte do sindicato\n\n");
                 }
 
-                System.out.printf("Vendas do funcionário %s:\n", funcionario.name);
+                System.out.printf("Vendas do funcionário %s:\n\n", funcionario.name);
 
                 for(Resultado_venda vendas : funcionario.venda_list)
                 {
-                    System.out.printf("Data: %s\n", vendas.date);
-                    System.out.printf("Produto vendido: %s\n", vendas.produto);
-                    System.out.printf("Valor do produto: %s\n", vendas.valor_do_produto);
+                    System.out.printf("> Data: %s\n", vendas.date);
+                    System.out.printf("> Produto vendido: %s\n", vendas.produto);
+                    System.out.printf("> Valor do produto: %s\n", vendas.valor_do_produto);
                     System.out.println();
                 }
 
-                System.out.println("===========================");
+                System.out.println("===========================\n");
             }
         }
 

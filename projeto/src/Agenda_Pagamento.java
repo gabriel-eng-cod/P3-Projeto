@@ -35,7 +35,7 @@ public class Agenda_Pagamento
         {
             nova = "Semanal";
 
-            System.out.printf("A cada quantas semanas será realizado o pagamento?\n\n");
+            System.out.printf("\nA cada quantas semanas será realizado o pagamento?\n\n");
 
             int semanas = input.nextInt();
 
@@ -51,24 +51,24 @@ public class Agenda_Pagamento
             nova += " ";
             nova += str1;
 
-            System.out.printf("Em qual dia da semana será realizado o pagamento?\n\n");
+            System.out.printf("\nEm qual dia da semana será realizado o pagamento?\n\n");
             System.out.println("1) Segunda-feira");
             System.out.println("2) Terça-feira");
             System.out.println("3) Quarta-feira");
             System.out.println("4) Quinta-feira");
-            System.out.println("5) Sexta-feira");
+            System.out.println("5) Sexta-feira\n");
 
             int dia = input.nextInt();
 
             while(dia < 1 || dia > 5)
             {
-                System.out.println("Respota inválida! Tente novamente!\n");
+                System.out.println("\nRespota inválida! Tente novamente!\n");
                 System.out.printf("Em qual dia da semana será realizado o pagamento?\n\n");
                 System.out.println("1) Segunda-feira");
                 System.out.println("2) Terça-feira");
                 System.out.println("3) Quarta-feira");
                 System.out.println("4) Quinta-feira");
-                System.out.println("5) Sexta-feira");
+                System.out.println("5) Sexta-feira\n");
                 dia = input.nextInt();
             }
 
@@ -93,7 +93,7 @@ public class Agenda_Pagamento
                 nova += " Sexta";
             }
 
-            System.out.printf("A agenda '%s' foi criada\n", nova);
+            System.out.printf("\nA agenda '%s' foi criada\n", nova);
 
             formas_pagamento.add(nova);
         }
@@ -101,13 +101,13 @@ public class Agenda_Pagamento
         {
             nova = "Mensal";
 
-            System.out.printf("Em que dia do mês será realizado o pagamento?\n\n");
+            System.out.printf("\nEm que dia do mês será realizado o pagamento?\n\n");
 
             int data = input.nextInt();
 
             while(data < 1 || data > 30)
             {
-                System.out.println("Respota inválida! Tente novamente!\n");
+                System.out.println("\nRespota inválida! Tente novamente!\n");
                 System.out.printf("Em que dia do mês será realizado o pagamento?\n\n");
                 data = input.nextInt();
             }

@@ -10,6 +10,8 @@ public class Main {
 
         Scanner input = new Scanner(System.in);
 
+        System.out.println();
+        System.out.println("==============================");
         System.out.println("Bem vindo à Folha de Pagamento");
         System.out.println("==============================");
 
@@ -18,18 +20,19 @@ public class Main {
             System.out.println(" ____________________________________");
             System.out.println("|                                    |");
             System.out.println("|Escolha uma das opções abaixo:      |");
-            System.out.println("|1) Adicionar um novo empregado      |");
-            System.out.println("|2) Remover um empregado             |");
-            System.out.println("|3) Lançar um cartão de ponto        |");
-            System.out.println("|4) Lançar um resultado venda        |");
-            System.out.println("|5) Lançar uma taxa de serviço       |");
-            System.out.println("|6) Alterar detalhes de um empregado |");
-            System.out.println("|7) Rodar folha de pagamento         |");
-            System.out.println("|8) Undo                             |");
-            System.out.println("|9) Redo                             |");
-            System.out.println("|10) Criar nova agenda de pagamento  |");
-            System.out.println("|11) Sair do sistema                 |");
-            System.out.println("|12) Listar funcionários             |");
+            System.out.println("|                                    |");
+            System.out.println("|1) Adicionar um novo empregado.     |");
+            System.out.println("|2) Remover um empregado.            |");
+            System.out.println("|3) Lançar um cartão de ponto.       |");
+            System.out.println("|4) Lançar um resultado venda.       |");
+            System.out.println("|5) Lançar uma taxa de serviço.      |");
+            System.out.println("|6) Alterar detalhes de um empregado.|");
+            System.out.println("|7) Rodar folha de pagamento.        |");
+            System.out.println("|8) Undo.                            |");
+            System.out.println("|9) Redo.                            |");
+            System.out.println("|10) Criar nova agenda de pagamento. |");
+            System.out.println("|11) Sair do sistema.                |");
+            System.out.println("|12) Listar funcionários.            |");
             System.out.println("|____________________________________|\n");
 
             System.out.printf("-> ");
